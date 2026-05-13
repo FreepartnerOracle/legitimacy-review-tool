@@ -1,0 +1,34 @@
+{
+  "name": "business-website-review",
+  "version": "0.3.6",
+  "description": "A TypeScript CLI and local GUI for public business website reviews.",
+  "author": "Freepartner Digital",
+  "type": "module",
+  "bin": {
+    "business-website-review": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/checks.test.js dist/identity.test.js dist/externalEvidence.test.js",
+    "review": "npm run build && node dist/cli.js",
+    "gui": "npm run build && node dist/cli.js --gui",
+    "bundle": "esbuild src/cli.ts --bundle --platform=node --target=node22 --format=cjs --external:playwright --external:playwright-core --external:chromium-bidi/* --outfile=dist/business-website-review.cjs",
+    "package:win": "npm run bundle && node scripts/build-windows-exe.mjs",
+    "package:win:browsers": "node scripts/install-release-browsers.mjs",
+    "package:win:gui-subsystem": "node scripts/set-windows-gui-subsystem.mjs release/business-website-review.exe",
+    "package:win:sign": "node scripts/sign-windows-exe.mjs",
+    "package:win:full": "npm run package:win && npm run package:win:browsers && npm run package:win:gui-subsystem && npm run package:win:sign"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "esbuild": "^0.25.0",
+    "postject": "^1.0.0-alpha.6",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
